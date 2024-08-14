@@ -1,11 +1,16 @@
-import React, { useState } from 'react'
+
 import './Register.css'
 import Lottie from "lottie-react";
 import RegAnimation from "../../../public/animation/RegAnimation.json"
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useState, CSSProperties } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
+import { ScaleLoader } from 'react-spinners';
+import { useNavigate } from 'react-router-dom';
 function Register() {
      // =============================== variables part start 
     const [name, setName]                                   = useState ('')
@@ -15,7 +20,13 @@ function Register() {
     const [password, setPassword]                           = useState ('')
     const [passwordError, setPasswordError]                 = useState ('')
     const [show, setShow]                                   = useState (false)
-    const [conPassword, setConPassword]                     = useState (false)
+    // const [conPassword, setConPassword]                   = useState (false)
+    const navigate                                          = useNavigate ()
+
+
+    // ================================ firebase variables part starts
+    const auth = getAuth();
+    const [loader, setLoader]                              = useState (false)
 
     // =============================== functions part start 
        const handelName = (e)=>{
@@ -37,9 +48,9 @@ function Register() {
           setShow(!show)
         }
 
-        const handelConPass = (e)=>{
-          setConPassword(!conPassword)
-        }
+        // const handelConPass = (e)=>{
+        //   setConPassword(!conPassword)
+        // }
 
     // ============================== main submit function part start
         const handelSubmit = (e)=>{
@@ -56,17 +67,55 @@ function Register() {
               setPasswordError('Please Enter Your Password')
             }
             else{
-              toast.success('Register successfully', {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce,
+              setLoader(true)
+              createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                  setLoader(false)
+                  toast.success('Register successfully', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                    });
+                    navigate('/')
+                })
+                .catch((error) => {
+                  const errorCode = error.code;
+                  const errorMessage = error.message;
+                  setLoader(false)
+                  if(errorCode == 'auth/weak-password'){
+                    toast.error('weak-password', {
+                      position: "top-center",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "dark",
+                      transition: Bounce,
+                      });
+                  }
+                  if(errorCode == 'auth/email-already-in-use'){
+                    toast.error('email already used', {
+                      position: "top-center",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "dark",
+                      transition: Bounce,
+                      });
+                  }
                 });
+              
             }
         } 
 
@@ -99,8 +148,8 @@ function Register() {
                 </div>
                 
                 <p className='error'>{passwordError}</p>
-                <label>Confirm Password</label> <br/>
-                <div className="conPass">
+                {/* <label>Confirm Password</label> <br/> */}
+                {/* <div className="conPass">
                 {
                     conPassword ?
                     <FaRegEye onClick={handelConPass} className='RegEyeIcons' />
@@ -108,9 +157,18 @@ function Register() {
                     <FaRegEyeSlash onClick={handelConPass} className='RegEyeIcons'/> 
                   }
                 <input type="password" placeholder="Confirm your Password" /> <br/>
+                </div> */}
+                {/* <p className='error'>{passwordError}</p> */}
+                {
+                  loader?
+                <div className='loader'>
+
+                <ScaleLoader color='#fff' />
                 </div>
-                <p className='error'>{passwordError}</p>
+                :
+
                 <button type='submit' className='RegButton'  >Register</button>
+                }
             </form>
         </div>
         </div>
@@ -120,3 +178,7 @@ function Register() {
 }
 
 export default Register
+
+
+
+

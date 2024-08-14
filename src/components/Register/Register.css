@@ -41,7 +41,22 @@
     @apply font-Poppins;
     color: #EEEEEE;
 }
+.RegPass{
+    position: relative;
+}
+.RegEyeIcons{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #fff;
+    /* cursor: pointer; */
 
+}
+.conPass{
+    position: relative;
+}
 .RegButton{
     width: 419px;
     height: 50px;
@@ -62,22 +77,22 @@
     background: #FF3D9D;
   color: white;
 }
+
 .RegButton:active{
     transform: scale(0.98);
 }
-.RegPass{
-    position: relative;
-}
-.RegEyeIcons{
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+.loader{
+    width: 419px;
+    height: 50px;
+    border: 2px solid #95A0A4;
+    background: #EF5A6F;
+    border-radius: 7px;
     font-size: 20px;
-    color: #fff;
-    /* cursor: pointer; */
-
-}
-.conPass{
-    position: relative;
+    font-weight: 700;
+    @apply font-Poppins;   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

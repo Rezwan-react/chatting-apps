@@ -4,6 +4,8 @@ import LoginPage from './pages/LoginPage'
 import NotFountd from './components/NotFound/NotFountd'
 import RegisterPage from './pages/RegisterPage'
 import { ToastContainer } from 'react-toastify'
+import database from './firebase.config'
+
 
 
 function App() {
