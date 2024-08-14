@@ -4,6 +4,9 @@ import loginani from '../../../public/animation/Login-Animation.json'
 import './Login.css'
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -39,6 +42,19 @@ function Login() {
      if(!password){
       setPasswordError('Please Enter Your Password')
     }
+    else{
+      toast.success('Login successfully', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+        });
+    }
   }
 
   // ------------------------------- main submit function end
@@ -69,6 +85,7 @@ function Login() {
                   </div>
                   <p className='error'>{passwordError}</p>
                   <button className='loginButton' type="submit">Login</button>
+                  <Link to='/register' className='text-lg font-Poppins font-normal text-white flex justify-center mb-1'>Don't have an account ? <span className='font-bold'> Register Here</span> </Link>
                 </form>
             </div>
         </div>

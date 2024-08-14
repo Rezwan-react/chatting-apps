@@ -1,9 +1,6 @@
-.container{
-    background: #262222;
-}
-.main_from{
+.reg_form{
     width: 479px;
-    @apply bg-gradient-to-r from-[#4D5E63] to-[#24393F];
+    background: #424A6D;
     display: flex;
     flex-direction: column ;
     justify-content: center;
@@ -11,22 +8,23 @@
     border-radius: 27px;
   
 }
-.LoginHead{
-    font-size: 30px;
-    font-weight: 500;
-    color: #fff;
+.RegHead{
+    font-size: 25px;
+    font-weight: 700;
     @apply font-Poppins;
+    color: #fff;   
 }
-.login_form label{
-    font-size: 16px;
-    font-weight: 500;
+.reg_form label{
+    font-size: 18px;
+    font-weight: 400;
     @apply font-Poppins;
     color: #fff;
-    display: inline-block;
-    margin-top: 15px;
+    margin-top: 25px;
     margin-bottom: 10px;
+    display: inline-block;
 }
-.login_form input{
+
+.reg_form input{    
     width: 419px;
     height: 50px;
     border: 2px solid #95A0A4;
@@ -35,37 +33,42 @@
     outline: none;
     padding-left: 20px;
     color: #fff;
+   
 }
-.login_form .error{
+.reg_form .error{
     font-size: 15px;
     font-weight: 400;
     @apply font-Poppins;
-    color: yellow;
+    color: #EEEEEE;
 }
-.loginButton{
+
+.RegButton{
     width: 419px;
     height: 50px;
     border: 2px solid #95A0A4;
-    background: #A5D9D0;
+    background: #EF5A6F;
     border-radius: 7px;
     font-size: 20px;
     font-weight: 700;
     @apply font-Poppins;
-    color: #000;
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
-.loginButton:active{
-    background: #89C3B5;
+.RegButton:hover{
+    background: #FF3D9D;
+  color: white;
+}
+.RegButton:active{
     transform: scale(0.98);
 }
-.pass{
+.RegPass{
     position: relative;
 }
-.eyeIcons{
+.RegEyeIcons{
     position: absolute;
     right: 20px;
     top: 50%;
@@ -75,4 +78,6 @@
     /* cursor: pointer; */
 
 }
-
+.conPass{
+    position: relative;
+}

@@ -2,6 +2,9 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import './App.css'
 import LoginPage from './pages/LoginPage'
 import NotFountd from './components/NotFound/NotFountd'
+import RegisterPage from './pages/RegisterPage'
+import { ToastContainer } from 'react-toastify'
+
 
 function App() {
 
@@ -9,6 +12,7 @@ function App() {
     createRoutesFromElements(
       <Route>
         <Route path='/' element ={<LoginPage/>}/>
+        <Route path='/register' element ={<RegisterPage/>}/>
         <Route path='*' element ={<NotFountd/>}/>
       </Route>
     )
@@ -18,6 +22,7 @@ function App() {
   return (
     <>
       <RouterProvider router ={route}/>
+      <ToastContainer />
     </>
   )
 }
