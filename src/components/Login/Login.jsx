@@ -6,7 +6,8 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
 
@@ -33,6 +34,11 @@ function Login() {
     setShowPassword(!showPassword)
   }
   // -------------------------------- functions part end
+   // ================================ firebase variables part starts
+   const auth = getAuth();
+
+
+
   // ============================== main submit function part start
   const handelSubmit = (e)=>{
     e.preventDefault()
@@ -43,17 +49,27 @@ function Login() {
       setPasswordError('Please Enter Your Password')
     }
     else{
-      toast.success('Login successfully', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-        });
+          signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+      // toast.success('Login successfully', {
+      //   position: "top-center",
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "dark",
+      //   transition: Bounce,
+      //   });
     }
   }
 

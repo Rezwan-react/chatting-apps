@@ -6,7 +6,7 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { useState, CSSProperties } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { ScaleLoader } from 'react-spinners';
@@ -70,7 +70,14 @@ function Register() {
               setLoader(true)
               createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
+                  // =============== add update profile and photo part
+                  updateProfile(auth.currentUser, {
+                    displayName: name,
+                     photoURL: "https://example.com/jane-q-user/profile.jpg"
+                  })
+                  // =============== loader part
                   setLoader(false)
+                  // =============== toast part
                   toast.success('Register successfully', {
                     position: "top-center",
                     autoClose: 5000,
@@ -83,6 +90,8 @@ function Register() {
                     transition: Bounce,
                     });
                     navigate('/')
+                    // =============== send email verification part
+                    sendEmailVerification(auth.currentUser)
                 })
                 .catch((error) => {
                   const errorCode = error.code;
