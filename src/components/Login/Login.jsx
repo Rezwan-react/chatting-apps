@@ -53,23 +53,38 @@ function Login() {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        // ...
+        if(userCredential.user.emailVerified == false){
+          toast.error('Please verifi your email', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+            });
+        }else{
+          toast.success('Login successfully', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+            });
+        }
+       
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
       });
-      // toast.success('Login successfully', {
-      //   position: "top-center",
-      //   autoClose: 5000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "dark",
-      //   transition: Bounce,
-      //   });
+      
     }
   }
 
@@ -100,8 +115,13 @@ function Login() {
                   <input onChange={handelPassword} type={showPassword? "text" : "password"} placeholder="Enter your Password" /> <br/>
                   </div>
                   <p className='error'>{passwordError}</p>
+                  <Link to='restPassword' className="text-lg font-Poppins font-normal text-white hover:text-yellow-100 flex justify-end mt-2">Forgot Password?</Link>
                   <button className='loginButton' type="submit">Login</button>
-                  <Link to='/register' className='text-lg font-Poppins font-normal text-white flex justify-center mb-1'>Don't have an account ? <span className='font-bold'> Register Here</span> </Link>
+                        
+                        <div >
+                           
+                           <Link to='/register' className='text-lg font-Poppins font-normal text-white flex justify-center mb-2'>Don't have an account ? <span className='font-bold'> Register Here</span> </Link>
+                    </div>
                 </form>
             </div>
         </div>

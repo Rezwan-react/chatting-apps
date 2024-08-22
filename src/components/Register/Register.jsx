@@ -20,7 +20,8 @@ function Register() {
     const [password, setPassword]                           = useState ('')
     const [passwordError, setPasswordError]                 = useState ('')
     const [show, setShow]                                   = useState (false)
-    // const [conPassword, setConPassword]                   = useState (false)
+    const [conPassword, setConPassword]                     = useState (false)
+    const [conpasswordError, setConPasswordError]           = useState ('')
     const navigate                                          = useNavigate ()
 
 
@@ -48,9 +49,10 @@ function Register() {
           setShow(!show)
         }
 
-        // const handelConPass = (e)=>{
-        //   setConPassword(!conPassword)
-        // }
+        const handelConPass = (e)=>{
+          setConPassword(e.target.value)
+          setConPasswordError('')
+        }
 
     // ============================== main submit function part start
         const handelSubmit = (e)=>{
@@ -66,65 +68,72 @@ function Register() {
             if(!password){
               setPasswordError('Please Enter Your Password')
             }
+             if(!conPassword){
+              setConPasswordError('Please Enter Your Password')
+            }
             else{
-              setLoader(true)
-              createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                  // =============== add update profile and photo part
-                  updateProfile(auth.currentUser, {
-                    displayName: name,
-                     photoURL: "https://example.com/jane-q-user/profile.jpg"
+              if(password != conPassword){
+                alert('Please enter the same password')
+              }
+              else{
+                setLoader(true)
+                createUserWithEmailAndPassword(auth, email, password)
+                  .then((userCredential) => {
+                    // =============== add update profile and photo part
+                    updateProfile(auth.currentUser, {
+                      displayName: name,
+                       photoURL: "https://example.com/jane-q-user/profile.jpg"
+                    })
+                    // =============== loader part
+                    setLoader(false)
+                    // =============== toast part
+                    toast.success('Register successfully', {
+                      position: "top-center",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "dark",
+                      transition: Bounce,
+                      });
+                      navigate('/')
+                      // =============== send email verification part
+                      sendEmailVerification(auth.currentUser)
                   })
-                  // =============== loader part
-                  setLoader(false)
-                  // =============== toast part
-                  toast.success('Register successfully', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                    transition: Bounce,
-                    });
-                    navigate('/')
-                    // =============== send email verification part
-                    sendEmailVerification(auth.currentUser)
-                })
-                .catch((error) => {
-                  const errorCode = error.code;
-                  const errorMessage = error.message;
-                  setLoader(false)
-                  if(errorCode == 'auth/weak-password'){
-                    toast.error('weak-password', {
-                      position: "top-center",
-                      autoClose: 5000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      theme: "dark",
-                      transition: Bounce,
-                      });
-                  }
-                  if(errorCode == 'auth/email-already-in-use'){
-                    toast.error('email already used', {
-                      position: "top-center",
-                      autoClose: 5000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      theme: "dark",
-                      transition: Bounce,
-                      });
-                  }
-                });
-              
+                  .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setLoader(false)
+                    if(errorCode == 'auth/weak-password'){
+                      toast.error('weak-password', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                        transition: Bounce,
+                        });
+                    }
+                    if(errorCode == 'auth/email-already-in-use'){
+                      toast.error('email already used', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                        transition: Bounce,
+                        });
+                    }
+                  });
+              }
             }
         } 
 
@@ -139,12 +148,15 @@ function Register() {
         <div className="reg_form">
             <h1 className='RegHead'>Create account</h1>
             <form onSubmit={handelSubmit} >
+              {/* ==================== name ================== */}
                 <label>Name</label> <br/>
                 <input onChange={handelName} type="text" placeholder="Enter your Name" /> <br/>
                 <p className='error'>{nameError}</p>
+                {/* =================== email ================== */}
                 <label>Email</label> <br/>
                 <input onChange={handelEmail} type="email" placeholder="Enter your Email" /> <br/>
                 <p className='error'>{emailError}</p>
+                {/* =================== password =============== */}
                 <label>Password</label> <br/>
                 <div className='RegPass'>
                   {
@@ -157,17 +169,19 @@ function Register() {
                 </div>
                 
                 <p className='error'>{passwordError}</p>
-                {/* <label>Confirm Password</label> <br/> */}
-                {/* <div className="conPass">
+                {/* ===================== confirm pass ================== */}
+                <label>Confirm Password</label> <br/>
+                 <div className="conPass">
                 {
                     conPassword ?
                     <FaRegEye onClick={handelConPass} className='RegEyeIcons' />
                     :
                     <FaRegEyeSlash onClick={handelConPass} className='RegEyeIcons'/> 
                   }
-                <input type="password" placeholder="Confirm your Password" /> <br/>
-                </div> */}
-                {/* <p className='error'>{passwordError}</p> */}
+                <input onChange={handelConPass} type={conPassword? 'text' : 'password'} placeholder="Confirm your Password" /> <br/>
+                </div> 
+                 <p className='error'>{conpasswordError}</p> 
+                 {/* ===================== submit button ================== */}
                 {
                   loader?
                 <div className='loader'>
@@ -177,7 +191,7 @@ function Register() {
                 :
 
                 <button type='submit' className='RegButton'  >Register</button>
-                }
+                }                
             </form>
         </div>
         </div>
@@ -190,4 +204,5 @@ export default Register
 
 
 
+              
 
